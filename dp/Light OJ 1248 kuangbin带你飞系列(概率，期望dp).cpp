@@ -32,7 +32,8 @@ int main()
         dp[0]=0;
         for(int i=0;i<n;++i)
         {
-            dp[i+1]=dp[i]/n+(n-i)/(n*1.0);///原始式：dp[i+1]=(n-i/n)*dp[i]+i/n*dp[i+1]+1
+
+                dp[i+1] = dp[i] + 1.0*n/(n-i);///原始式：dp[i+1]=(n-i/n)*dp[i]+i/n*dp[i+1]+1
             //dp[i+1]由dp[i]推过来的概率为(n-i)/n,由它自己dp[i+1]推过来的概率为(i/n),再加上1
             ///概率系数之和为1
 //            cout<<dp[i]<<endl;

@@ -68,7 +68,7 @@ int main()
             t=max(t,arr[i].length2);
             ans=min(ans,arr[i+1].length1+t);
         }
-        LL ans=1e18;
+//        LL ans=1e18;
 //        for(int j=0; j<=n; ++j)///±©Á¦·¨
 //        {
 //            ans1=arr[j].length1;
