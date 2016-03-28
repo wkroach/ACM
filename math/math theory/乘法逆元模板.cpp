@@ -49,21 +49,26 @@ LL quick(LL x, LL p)///费马小定理+快速幂，p为Mod-2时为x模Mod的乘法逆元, 前提是Mo
 }
 
 
-void ex_gcd(LL a,LL b,LL &t,LL &x,LL &y)///利用扩展欧几里得求逆元，不要求模为素数
+LL ex_gcd(LL a, LL b, LL &x, LL &y)///利用扩展欧几里得求逆元，不要求模为素数
 {
+    if(a==0&&b==0) return -1;
     if(!b)
     {
-        t=a,x=1,y=0;
+        x=1,y=0;
+        return a;
     }
     else
     {
-        ex_gcd(b,a%b,t,y,x);y-=x*(a/b);
+       LL tmp = ex_gcd(b,a%b,y,x);
+       y-=x*(a/b);
+       return tmp;
     }
 }
 
 LL mod_inverse(LL a,LL mod)
 {
     LL x,y,g;
-    LL ans = ex_gcd(a,mod,g,x,y);
-    return (ans%mod+mod)%mod;
+    LL gcd = ex_gcd(a,mod,x,y);
+    if(gcd == 1) return (x%mod+mod)%mod;
+    return -1;
 }
