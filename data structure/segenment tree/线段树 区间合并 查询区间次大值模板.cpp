@@ -66,7 +66,7 @@ int quire2(int now,int l,int r)///第二次根据最大值插询出次大值
     int mid=l+(r-l)/2;
     if(ql<=l&&r<=qr)///重点！！！！！！！
         ///次大值一定是除最大值所在节点之外其余节点的最大值
-        ///或这是最大值所在节点的次大值
+        ///或者是最大值所在节点的次大值
         ///然后在他们之中选最大的那个就是次大值
     {
         if(MAX[now]==val)
@@ -81,7 +81,7 @@ int quire2(int now,int l,int r)///第二次根据最大值插询出次大值
 int main()
 {
     #ifndef ONLINE_JUDGE
-        freopen("input.txt","r",stdin);
+//        freopen("input.txt","r",stdin);
     #endif // ONLINE_JUDGE
     int n,m;
     while(scanf("%d%d",&n,&m)==2)
