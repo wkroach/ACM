@@ -73,7 +73,7 @@ LL ex_gcd(LL a, LL b, LL &x, LL &y)///利用扩展欧几里得求逆元，不要求模为素数
     }
 }
 
-LL mod_inverse(LL a,LL mod)
+LL mod_inverse(LL a,LL mod)//欧几里得求逆元
 {
     LL x,y,g;
     LL gcd = ex_gcd(a,mod,x,y);

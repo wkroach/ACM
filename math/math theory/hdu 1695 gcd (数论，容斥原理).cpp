@@ -29,10 +29,10 @@
 using namespace std;
 int n,m,k;
 int ql,qr,pos;
-int prime[Size];
-int Euler[100050];
+
 vector<LL> factors[100005];
 
+int prime[Size];
 
 void prime_init()///ÏßĞÔÉ¸,¸´ÔÓ¶È½Ó½üO(n),ËØÊı·¶Î§È¡sqrt(n)¼´¿ÉÇó³öËùÓĞÖÊÒòÊı
 {
@@ -51,6 +51,7 @@ void prime_init()///ÏßĞÔÉ¸,¸´ÔÓ¶È½Ó½üO(n),ËØÊı·¶Î§È¡sqrt(n)¼´¿ÉÇó³öËùÓĞÖÊÒòÊı
     }
 }
 
+int Euler[100050];
 void euler()///Å·À­É¸£¬¸´ÔÓ¶ÈO(nloglogn)
 {
     memset(Euler,0,sizeof(Euler));
@@ -75,12 +76,10 @@ void getfactors()///´ò±í£¬½«1µ½sizeµÄÃ¿¸öÊıµÄÖÊÒòÊı±£´æÔÚvectorÖĞ£¬×¢Òâ£¡£¡£¡£¡Ã
     for(LL j = 2; j <= 100000; ++j)
     {
         LL tmp = j;
-//        cout<<j<<" ";
         for(int i = 1; i<=prime[0] && prime[i] <= j/prime[i]; ++i)
         {
             if(tmp % prime[i] == 0)
             {
-//                cout<<i<<" "<<prime[i]<<" ";
                 factors[j].push_back(prime[i]);
                 while(tmp % prime[i] == 0)///³ı¸É¾»
                 {
