@@ -79,27 +79,26 @@ int main()
             LL tmp = gcd(x,m);
             for(LL j = 0;j<factors.size();++j)
             {
-                if(factors[j] % tmp == 0)///重点！！！！任意两个约数的公约数一定也是m的约数
-                                        ///对于小于m的任意一个数，一旦被走过两次，即有两个的约数被走过，那么一定也有两个约数的公约数是它的约数且被走过，
-                                        ///且被统计过两次，因此要被消掉，大于两个约数通同理（容斥原理）
+                if(factors[j] % tmp == 0)///重点！！！！任意个约数的公约数一定也是m的约数，有唯一分解定理可证
                 {
                     vis[j] = 1;
                 }
             }
         }
-            for(LL j=0;j < factors.size();++j)
-            {
-                    if(vis[j] == num[j])
-                        continue;
-                    LL t = (m-1)/factors[j];
-                    ans += (t*(t+1) / 2 * factors[j] * (vis[j] - num[j]));//统计这个因子在小于m的范围内的倍数之和，并根据重复计算的次数进行容斥
-                    LL tmp2 = vis[j] - num[j];
-                    for(LL k = j; k < factors.size(); ++k)
-                    {
-                        if(factors[k] % factors[j] == 0)
-                            num[k] += tmp2;//更新重复记录数组
-                    }
-            }
+        for(LL j=0;j < factors.size();++j)///因此，这道题中，小于m的所有和m互素的数，要么不被走到，要么整个m全被走到，因此只需要考虑小于m且与m不互质的数
+                                        ///与普通容斥不同，此题中，由于任意约数的lcm（交集）也为约数，因此m的约数集合本身就是约数的幂集（即容斥的集合，通常为2^n)
+        {
+                if(vis[j] == num[j])
+                    continue;
+                LL t = (m-1)/factors[j];
+                ans += (t*(t+1) / 2 * factors[j] * (vis[j] - num[j]));///统计这个因子在小于m的范围内的倍数之和，并统计数组计算所要计算的次数进行计算
+                LL tmp2 = vis[j] - num[j];
+                for(LL k = j; k < factors.size(); ++k)
+                {
+                    if(factors[k] % factors[j] == 0)
+                        num[k] += tmp2;//更新重复记录数组，表示当前此数又被计算了多少次
+                }
+        }
         printf("Case #%lld: %lld\n",++Case,ans);
     }
     return 0;

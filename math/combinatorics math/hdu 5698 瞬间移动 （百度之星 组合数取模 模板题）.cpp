@@ -14,7 +14,7 @@
 
 //#include<bits/c++std.h>
 
-#define Size 1000005
+#define Size 100005
 #define inf 2e9
 #define INF 2e18
 #define LL long long int
@@ -25,12 +25,33 @@
 #define eps 1e-8
 #define lson now*2,l,l+(r-l)/2
 #define rson now*2+1,l+(r-l)/2+1,r
+
 using namespace std;
 LL n,m,k;
-///普通求逆元
+LL ql,qr,pos;
+
+LL gcd(LL a,LL b)//gcd
+{
+    return b == 0?a:gcd(b,a%b);
+}
+
+LL multi(LL a, LL b, LL mod)//快速乘法取模，防止两个过大的数相乘爆LL, 速度比原生乘法要慢
+{
+    LL ans = 0;
+    a %= mod;
+    while(b)//原理与快速幂类似，将一个数装换为二进制，按位相乘再求和
+    {
+        if(b&1)
+        {
+            ans = (ans + a) % mod;
+        }
+        b >>= 1;
+        a = (a + a) % mod;
+    }
+    return ans;
+}
 
 LL quickMod(LL a, LL b, LL mod)//基于快速乘法取模的快速幂取模
-///重点！！！！！如果能够改成int且满足题目要求一定要改，速度比LL快两倍
 {
     if(b == 0)
         return 1%mod;
@@ -80,63 +101,48 @@ LL modInver(LL a, LL mod)///乘法逆元 扩展欧几里得法，对于mod不是质数但与a 互质使
     return -1;
 }
 
-///筛法求1~Size之间所有逆元
-LL inv[Size];
-
-LL inverInitPrime(LL mod)///线性筛逆元，在同时筛素数的基础上筛出逆元
+LL com(LL n, LL m, LL mod)///组合数取模，对于n，m 较小时较有效 复杂度O(m)
 {
-    memset(prime,0,sizeof(prime));
-    inv[1] = 1 % mod;
-    for(LL i=2; i <= Size; ++i)
+    if(m > n)
+        return 0;
+    LL ans = 1;
+    for(LL i = 1; i <= m; ++i)
     {
-        if(!prime[i])
-        {
-            prime[++prime[0]] = i;
-            inv[i] = modInverPrime(i, mod);
-        }
-        for(LL j = 1; j <= prime[0] && prime[j] <= Size / i; ++j)
-        {
-            prime[i * prime[j]] = 1;
-            inv[i * prime[j]] = inv[i] * inv[prime[j]] % mod;
-            if(i % prime[j] == 0)
-            {
-                break;
-            }
-        }
+        LL a = (n + i -m) % mod;
+        LL b = i % mod;
+        ans = ans * (a * modInverPrime(b, mod) % mod) % mod;
+//        ans = ans * (a * modInver(b, mod) % mod) % mod;
     }
+    return ans;
 }
 
-LL inverInit(LL mod)///已有素数表
+LL lucas(LL n, LL m,LL mod)///基于lucas定理的组合数取模，对于n，m较大时有效，复杂度O(mod*log(m)), 当mod非常大时无效
 {
-    LL cnt = 0;///cnt表示当前数之前有多少个素数
-    inv[1] = 1;
-    for(LL i = 2; i <= Size; ++i)
-    {
-        if(primePos[i])///利用素数的位置判断是否为素数，同时更新cnt
-        {
-            cnt = primePos[i];
-            inv[i] = modInverPrime(i, mod);
-        }
-        for(LL j = 1; j <= cnt && prime[j] <= Size / i; ++j)
-        {
-            inv[i * prime[j]] = inv[i] * inv[prime[j]] % mod;
-            if(i % prime[j] == 0)
-            {
-                break;
-            }
-        }
-    }
+    if(m == 0)
+        return 1;
+    return com(n % mod, m % mod, mod) * lucas(n / mod, m / mod, mod) % mod;
 }
 
-///最强公式法，线性筛1~mod中所有对mod的逆元，p为奇质数
-LL inverInit_ex(LL mod)
+int main()
 {
-    inv[1] = 1;
-    for(LL i = 2; i <= mod; ++i)
+    #ifndef ONLINE_JUDGE
+//        freopen("input.txt","r",stdin);
+//        freopen("output.txt","w",stdout);
+    #endif // ONLINE_JUDGE
+    LL t;
+    LL x,y,z;
+    LL Case=0;
+//    cin>>t;
+//    while(t--)
+    while(scanf("%I64d%I64d",&n,&m) == 2)
     {
-        inv[i] = (mod - mod / i) * inv[mod % i] % mod;
+        if(n == 2 || m == 2)
+        {
+            printf("1\n");
+            continue;
+        }
+        printf("%I64d\n",lucas(n + m - 4,n - 2,Mod));
+//        printf("%I64d\n",com(n + m - 4,n - 2,Mod));
     }
+    return 0;
 }
-
-
-
